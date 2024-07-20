@@ -1,0 +1,44 @@
+{#
+/**
+ * Multiple Choice Html : item row
+ *
+ * @var hiddenfield
+ * @var name
+ * @var code
+ * @var answer
+ * @var checkedState
+ * @var sCheckconditionFunction
+ * @var myfname
+ * @var sValue
+ **** Additional attributes:
+ * @var question_template_attribute.fix_width
+ * @var question_template_attribute.fix_height
+ * @var question_template_attribute.keep_aspect
+ * @var question_template_attribute.crop_or_resize
+ * @var question_template_attribute.horizontal_scroll
+ */
+#}
+
+<!-- answer_row -->
+
+{% if "https://frankfurt-university.cloud.panopto.eu/Panopto" in answer %}
+    {# If answer is a Panopto link #}
+    {% set answer_raw = (answer|raw|trim|replace({'Viewer': 'Embed'})) ~ '&autoplay=false&offerviewer=false&showtitle=true&showbrand=true&captions=false&interactivity=none' %}
+    <div class="video-container col-12 {{ max_buttons_row }}">
+        <iframe src="{{ answer_raw }}" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen allow="autoplay" aria-label="In Panopto integrierter Videoplayer" class="responsive-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
+    </div>
+    <p></p>
+{% elseif "1https://frankfurt-university.cloud.panopto.eu/Panopto" in answer %}
+    {# If answer is a Panopto link with a leading '1' for autoplay #}
+    {% set corrected_answer = answer|slice(1) %}
+    {% set answer_raw = (corrected_answer|raw|trim|replace({'Viewer': 'Embed'})) ~ '&autoplay=true&offerviewer=false&showtitle=true&showbrand=true&captions=false&interactivity=none' %}
+    <div class="video-container col-12 {{ max_buttons_row }}">
+        <iframe src="{{ answer_raw }}" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen allow="autoplay" aria-label="In Panopto integrierter Videoplayer" class="responsive-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
+    </div>
+    <p></p>
+{% else %}
+    <div>Fehlerhafter Link<br>
+        Er sollte folgendes format haben: https://frankfurt-university.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=PanoptoVideoId</div>
+    <div>Wenn Sie Autoplay aktivieren möchten, fügen Sie bitte 1 vor dem Link ein, bspw: 1https://frankfurt-university.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=PanoptoVideoId</div>
+{% endif %}
+<!-- end of answer_row -->
